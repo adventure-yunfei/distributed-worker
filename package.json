@@ -41,6 +41,8 @@
     "yargs": "^3.31.0"
   },
   "dependencies": {
-    "js-assert": "^2.0.1"
+    "global": "^4.3.0",
+    "js-assert": "^2.0.4",
+    "lodash": "^3.10.1"
   }
 }
