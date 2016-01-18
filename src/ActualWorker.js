@@ -13,16 +13,15 @@ function notifyTaskResult(taskId, data = null, error = null) {
 }
 
 let workerReady = false;
-export class HardWorker {
+export default class ActualWorker {
     constructor({work = null} = {}) {
         if (workerReady) {
             throw new Error('There can only be one HardWorker!');
         } else {
-            global.onmessage = (msg) => {
-                const taskId = msg[PROP_TASK_ID];
+            global.onmessage = ({data: {[PROP_TASK_ID]: taskId, data}}) => {
                 __assert__(taskId, 'task id is not passed along with message');
                 try {
-                    const result = this.work(msg.data);
+                    const result = this.work(data);
                     if (result && isFunction(result.then)) {
                         result
                             .then((data) => notifyTaskResult(taskId, data))
@@ -46,4 +45,8 @@ export class HardWorker {
     work() {
         throw new Error('HardWorker.work is not implemented');
     }
+}
+
+if (typeof window !== 'undefined') {
+    window.WorkersManager = HardWorker;
 }

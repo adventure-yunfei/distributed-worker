@@ -4,16 +4,16 @@ import __assert__ from 'js-assert/__assert__';
 
 import {PROP_TASK_ID} from './enums';
 
-export class WorkersManager {
+export default class WorkersManager {
     constructor() {
         this._tasksMap = {};
     }
 
-    _onWorkerMessage = (msg) => {
-        const taskId = msg[PROP_TASK_ID];
+    _onWorkerMessage = ({data: msgData}) => {
+        const taskId = msgData[PROP_TASK_ID];
         __assert__(taskId, 'task id is not passed along with message');
         __assert__(this._tasksMap[taskId], `WorkersManager doesn't receive this task id: ${taskId}`);
-        this._tasksMap[taskId](msg);
+        this._tasksMap[taskId](msgData);
     };
 
     work(data, workerFile) {
@@ -30,9 +30,13 @@ export class WorkersManager {
             };
             worker.onmessage = this._onWorkerMessage;
             worker.postMessage({
-                [PROP_TASK_ID]: uniqueId('taskId_'),
+                [PROP_TASK_ID]: taskId,
                 data
             });
         });
     }
+}
+
+if (typeof window !== undefined) {
+    window.WorkersManager = WorkersManager;
 }

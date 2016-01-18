@@ -1,29 +1,61 @@
-# ECMAScript 6 starter project
+# Promisable WEB Worker Runner
 
-A starter project to embrace incoming es6 js.
-
-# What it has?
-
-- Babel es6 compiler to transform es6 source code to es5 code
-- Webpack tuned to build one file bundle
-- Auto-Produce es5 code output when using as npm package
-- ESLint tuned to ensure better code style
-- `__assert__` keyword to enable debug check, which is similar to java "assert"
+Run task on web worker and retrieve the result, simply by Promise api.
 
 # How to use it
 
-1. Download the code
-2. Run "npm install"
-3. Run "npm install gulp -g" to install gulp globally (if you haven't installed it yet)
-3. Writing your es6 code as you wish - note "src/index.js" is the bundle main file
-4. When finish coding, run "gulp". It'll produce es5 output for each file under "lib/", and the bundled file under "bundles/"
-5. When using as npm package, it's tuned to export compiled code under "lib/" and "bundles/". No need to manually compile es6 code
+### Inside the main script, import and initialize a `WorkersManager`
 
-# Changes Log
+```javascript
+// include WorkersManager.js first
+var workersManager = new WorkersManager();
+```
 
-### [1.0.1](https://github.com/adventure-yunfei/es6-starter-project/compare/1.0.0...1.0.1)
+### Inside the worker executive script, import and initialize a `ActualWorker` with a `work` method
+ 
+There're two ways to initialize a `ActualWorker`:
 
-- Add `__assert__` keyword to enable debug check
-- Fix: add mising npm prepublish scripts and exported files config
+1. Directly pass `work` method to constructor:
 
-### [1.0.0](https://github.com/adventure-yunfei/es6-starter-project/tree/1.0.0)
+```javascript```
+// include ActualWorker.js first
+var worker = new ActualWorker({work: fnDoWork});
+```
+
+2. Extend to a sub class of `ActualWorker` (by es6 js):
+
+```javascript
+// include ActualWorker.js first
+class RealWorker extends ActualWorker {
+    work: fnDoWork
+}
+
+var worker = new RealWorker();
+```
+
+### Use `WorkersManager` to run work. E.g.:
+
+```javascript
+workersManager
+    .work(inputData)
+    .then(function (outputData) {
+        ...
+    })
+    .catch(function (outputError) {
+        ...
+    });
+```
+
+# API
+
+```javascript
+// Create a new worker and let it do the work with specified data
+// @returns Promise with work output data if succeeds
+WorkersManager.prototype.work(data: *, workerFile: string/*url to a worker script file*/)
+```
+
+```javascript
+// Receive work input and produce direct output or Promise for aync
+// @returns * | Promise with work output data if succeeds
+ActualWorker.prototype.work(data: *)
+```

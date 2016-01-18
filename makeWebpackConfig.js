@@ -5,7 +5,8 @@ export default function makeWebpackConfig(isDev) {
     return {
         context: ROOT,
         entry: {
-            bundle: `${SRC_DIR}/index.js`
+            WorksManager: `${SRC_DIR}/WorksManager.js`,
+            ActualWorker: `${SRC_DIR}/ActualWorker.js`
         },
         debug: isDev,
         devtool: isDev ? 'cheap-module-source-map' : '',
