@@ -1,6 +1,6 @@
 {
-  "name": "distributed-worker",
-  "version": "0.0.1",
+  "name": "promised-worker",
+  "version": "0.1.0",
   "description": "Promised worker runner",
   "files": [
     "lib"

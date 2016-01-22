@@ -1,4 +1,4 @@
-# Promisable WEB Worker Runner
+# Promised WEB Worker Runner
 
 Run task on web worker and retrieve the result, simply by Promise api.
 
