@@ -4,7 +4,7 @@ import yargs from 'yargs';
 import rimraf from 'rimraf';
 import eslint from 'gulp-eslint';
 
-import {BUNDLE_DIR, ES6_COMPILE_DIR, SRC_DIR} from './constants';
+import {ES6_COMPILE_DIR, SRC_DIR} from './constants';
 
 const args = yargs
     .alias('d', 'debug')
@@ -14,7 +14,7 @@ const isDev = args.debug; // Debug mode, will produce uncompressed debug bundle,
 /////////////////////////////////////
 // task for code style
 gulp.task('eslint', () => {
-    return gulp.src(['**/*.js', '!node_modules/**', `!${BUNDLE_DIR}/**`, `!${ES6_COMPILE_DIR}/**`])
+    return gulp.src(['**/*.js', '!node_modules/**', `!${ES6_COMPILE_DIR}/**`])
         .pipe(eslint())
         .pipe(eslint.format())
         .pipe(eslint.failAfterError());
