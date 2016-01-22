@@ -2,11 +2,9 @@ import isFunction from 'lodash/lang/isFunction';
 import __assert__ from 'js-assert/__assert__';
 import global from 'global';
 
-import {PROP_TASK_ID} from './enums';
-
 function notifyTaskResult(taskId, data = null, error = null) {
     global.postMessage({
-        [PROP_TASK_ID]: taskId,
+        __id: taskId,
         data,
         error
     });
@@ -18,7 +16,7 @@ export default class ActualWorker {
         if (workerReady) {
             throw new Error('There can only be one HardWorker!');
         } else {
-            global.onmessage = ({data: {[PROP_TASK_ID]: taskId, data}}) => {
+            global.onmessage = ({data: {__id: taskId, data}}) => {
                 __assert__(taskId, 'task id is not passed along with message');
                 try {
                     const result = this.work(data);

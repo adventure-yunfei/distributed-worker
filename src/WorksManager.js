@@ -1,8 +1,7 @@
 import global from 'global';
 import uniqueId from 'lodash/utility/uniqueId';
 import __assert__ from 'js-assert/__assert__';
-
-import {PROP_TASK_ID} from './enums';
+import Promise from 'promise-aplus';
 
 export default class WorkersManager {
     constructor() {
@@ -10,7 +9,7 @@ export default class WorkersManager {
     }
 
     _onWorkerMessage = ({data: msgData}) => {
-        const taskId = msgData[PROP_TASK_ID];
+        const taskId = msgData.__id;
         __assert__(taskId, 'task id is not passed along with message');
         __assert__(this._tasksMap[taskId], `WorkersManager doesn't receive this task id: ${taskId}`);
         this._tasksMap[taskId](msgData);
@@ -30,7 +29,7 @@ export default class WorkersManager {
             };
             worker.onmessage = this._onWorkerMessage;
             worker.postMessage({
-                [PROP_TASK_ID]: taskId,
+                __id: taskId,
                 data
             });
         });
