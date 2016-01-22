@@ -1,12 +1,9 @@
 import gulp from 'gulp';
-import gulpUtil from 'gulp-util';
 import gulpBabel from 'gulp-babel';
-import webpack from 'webpack';
 import yargs from 'yargs';
 import rimraf from 'rimraf';
 import eslint from 'gulp-eslint';
 
-import makeWebpackConfig from './makeWebpackConfig';
 import {BUNDLE_DIR, ES6_COMPILE_DIR, SRC_DIR} from './constants';
 
 const args = yargs

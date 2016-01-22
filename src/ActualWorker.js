@@ -46,5 +46,5 @@ export default class ActualWorker {
 }
 
 if (typeof window !== 'undefined') {
-    window.WorkersManager = HardWorker;
+    window.WorkersManager = ActualWorker;
 }
